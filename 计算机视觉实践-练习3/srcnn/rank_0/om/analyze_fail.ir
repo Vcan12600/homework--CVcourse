@@ -1,0 +1,1196 @@
+# ===============================================================================================
+# The following shows the last analyze fail log message.
+# ===============================================================================================
+
+----------------------------------------------------
+- Caught exception:
+----------------------------------------------------
+ValueError: For 'Sub', x.shape and y.shape need to broadcast. The value of x.shape[-2] or y.shape[-2] must be 1 or -1 when they are not the same, but got x.shape = [4, 1, 52, 52] and y.shape = [4, 1, 20, 20].
+
+At:
+  D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\_utils\utils.py(70): get_broadcast_shape
+  D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\operations\math_ops.py(80): infer_shape
+  D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\primitive.py(647): __infer__
+  D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\common\api.py(435): compile
+  D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\common\api.py(347): __call__
+  D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\common\api.py(121): wrapper
+  D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\common\api.py(718): staging_specialize
+  E:\mindspore\srcnn\trainsrcnn.py(49): train_step
+  E:\mindspore\srcnn\trainsrcnn.py(65): <module>
+
+
+----------------------------------------------------
+- The Traceback of Net Construct Code:
+----------------------------------------------------
+# 0 In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589
+                        return grad_(fn, weights)(*args)
+                               ^
+# 1 In file E:\mindspore\srcnn\trainsrcnn.py:41
+    loss = loss_fn(out, label)
+           ^
+# 2 In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:318
+        x = F.square(logits - labels)
+                     ^
+
+# ===============================================================================================
+# The following shows the IR when the function graphs evaluation fails to help locate the problem.
+# You can search the last ------------------------> to the node which is evaluated failure.
+# Refer to https://www.mindspore.cn/search?inputValue=analyze_fail.ir to get more instructions.
+# ===============================================================================================
+
+# IR entry: @after_grad_7
+# Total subgraphs: 41
+
+# Total params: 16
+# Params:
+%para1_args0 : <null>
+%para2_args1 : <null>
+%para3_conv1.weight : <Ref[Tensor[Float32]], (64, 1, 9, 9), ref_key=:conv1.weight>  :  has_default
+%para4_conv1.bias : <Ref[Tensor[Float32]], (64), ref_key=:conv1.bias>  :  has_default
+%para5_conv2.weight : <Ref[Tensor[Float32]], (32, 64, 1, 1), ref_key=:conv2.weight>  :  has_default
+%para6_conv2.bias : <Ref[Tensor[Float32]], (32), ref_key=:conv2.bias>  :  has_default
+%para7_conv3.weight : <Ref[Tensor[Float32]], (1, 32, 5, 5), ref_key=:conv3.weight>  :  has_default
+%para8_conv3.bias : <Ref[Tensor[Float32]], (1), ref_key=:conv3.bias>  :  has_default
+%para9_norm1.gamma : <Ref[Tensor[Float32]], (64), ref_key=:norm1.gamma>  :  has_default
+%para10_norm1.beta : <Ref[Tensor[Float32]], (64), ref_key=:norm1.beta>  :  has_default
+%para11_norm2.gamma : <Ref[Tensor[Float32]], (32), ref_key=:norm2.gamma>  :  has_default
+%para12_norm2.beta : <Ref[Tensor[Float32]], (32), ref_key=:norm2.beta>  :  has_default
+%para13_norm2.moving_mean : <Ref[Tensor[Float32]], (32), ref_key=:norm2.moving_mean>  :  has_default
+%para14_norm2.moving_variance : <Ref[Tensor[Float32]], (32), ref_key=:norm2.moving_variance>  :  has_default
+%para15_norm1.moving_mean : <Ref[Tensor[Float32]], (64), ref_key=:norm1.moving_mean>  :  has_default
+%para16_norm1.moving_variance : <Ref[Tensor[Float32]], (64), ref_key=:norm1.moving_variance>  :  has_default
+
+subgraph attr:
+subgraph instance: after_grad_7 : 000001ED08E5CE90
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:588/                    def after_grad(*args):/
+subgraph @after_grad_7(%para1_args0, %para2_args1, %para3_conv1.weight, %para4_conv1.bias, %para5_conv2.weight, %para6_conv2.bias, %para7_conv3.weight, %para8_conv3.bias, %para9_norm1.gamma, %para10_norm1.beta, %para11_norm2.gamma, %para12_norm2.beta, %para13_norm2.moving_mean, %para14_norm2.moving_variance, %para15_norm1.moving_mean, %para16_norm1.moving_variance) {
+  %1(CNode_14) = MakeTuple(%para1_args0, %para2_args1)
+      : (<Tensor[Float32], (4, 1, 64, 64)>, <Tensor[Float32], (4, 1, 20, 20)>) -> (<Tuple[Tensor[Float32]*2], TupleShape((4, 1, 64, 64), (4, 1, 20, 20))>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:588/                    def after_grad(*args):/
+  %2(15) = UnpackGraph(@forward_fn_3, %1)
+      : (<Func, NoShape>, <Tuple[Tensor[Float32]*2], TupleShape((4, 1, 64, 64), (4, 1, 20, 20))>) -> (<Func, NoShape>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+  %3(CNode_16) = MakeTuple(%para3_conv1.weight, %para4_conv1.bias, %para5_conv2.weight, %para6_conv2.bias, %para7_conv3.weight, %para8_conv3.bias, %para9_norm1.gamma, %para10_norm1.beta, %para11_norm2.gamma, %para12_norm2.beta)
+      : (<Ref[Tensor[Float32]], (64, 1, 9, 9)>, <Ref[Tensor[Float32]], (64)>, <Ref[Tensor[Float32]], (32, 64, 1, 1)>, <Ref[Tensor[Float32]], (32)>, <Ref[Tensor[Float32]], (1, 32, 5, 5)>, <Ref[Tensor[Float32]], (1)>, <Ref[Tensor[Float32]], (64)>, <Ref[Tensor[Float32]], (64)>, <Ref[Tensor[Float32]], (32)>, <Ref[Tensor[Float32]], (32)>) -> (<Tuple[Ref[Tensor[Float32]]*10], TupleShape((64, 1, 9, 9), (64), (32, 64, 1, 1), (32), (1, 32, 5, 5), (1), (64), (64), (32), (32))>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+  %4(15) = S_Prim_grad(%2, %3)
+      : (<Func, NoShape>, <Tuple[Ref[Tensor[Float32]]*10], TupleShape((64, 1, 9, 9), (64), (32, 64, 1, 1), (32), (1, 32, 5, 5), (1), (64), (64), (32), (32))>) -> (<Func, NoShape>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+
+#------------------------> 0
+  %5(15) = UnpackCall_unpack_call(%4, %1)
+      : (<Func, NoShape>, <Tuple[Tensor[Float32]*2], TupleShape((4, 1, 64, 64), (4, 1, 20, 20))>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+  Return(%5)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+}
+# Order:
+#   1: @after_grad_7:15{[0]: ValueNode<UnpackGraphPrimitive> UnpackGraph, [1]: ValueNode<FuncGraph> forward_fn_3, [2]: CNode_14}
+#   2: @after_grad_7:15{[0]: ValueNode<DoSignaturePrimitive> S_Prim_grad, [1]: 15, [2]: CNode_16}
+#   3: @after_grad_7:15{[0]: ValueNode<UnpackCall> MetaFuncGraph-unpack_call.17, [1]: 15, [2]: CNode_14}
+#   4: @after_grad_7:CNode_18{[0]: ValueNode<Primitive> Return, [1]: 15}
+
+
+subgraph attr:
+core : 1
+subgraph instance: UnpackCall_8 : 000001ED08FAF060
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+subgraph @UnpackCall_8(%para17_, %para18_) {
+  %1(15) = TupleGetItem(%para18_10, I64(0))
+      : (<Tuple[Tensor[Float32]*2], TupleShape((4, 1, 64, 64), (4, 1, 20, 20))>, <Int64, NoShape>) -> (<Tensor[Float32], (4, 1, 64, 64)>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+  %2(15) = TupleGetItem(%para18_10, I64(1))
+      : (<Tuple[Tensor[Float32]*2], TupleShape((4, 1, 64, 64), (4, 1, 20, 20))>, <Int64, NoShape>) -> (<Tensor[Float32], (4, 1, 20, 20)>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+
+#------------------------> 1
+  %3(15) = %para17_9(%1, %2)
+      : (<Tensor[Float32], (4, 1, 64, 64)>, <Tensor[Float32], (4, 1, 20, 20)>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+  Return(%3)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+}
+# Order:
+#   1: @UnpackCall_8:15{[0]: param_9, [1]: 15, [2]: 15}
+#   2: @UnpackCall_8:15{[0]: ValueNode<Primitive> Return, [1]: 15}
+
+
+subgraph attr:
+core : 1
+k_graph : 1
+subgraph instance: grad_forward_fn_11 : 000001ED08FB4AB0
+# In file E:\mindspore\srcnn\trainsrcnn.py:39/def forward_fn(x, label):/
+subgraph @grad_forward_fn_11 parent: [subgraph @grad_forward_fn_19](%para19_, %para20_) {
+  %1(15) = $(grad_forward_fn_19):J[side_effect_propagate: I64(1)](%para-1_20)
+      : (<Func, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+
+#------------------------> 2
+  %2(15) = %1(%para19_grad_forward_fn, %para20_grad_forward_fn)
+      : (<Tensor[Float32], (4, 1, 64, 64)>, <Tensor[Float32], (4, 1, 20, 20)>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+  %3(15) = TupleGetItem(%2, I64(0))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+  %4(15) = TupleGetItem(%2, I64(1))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+  %5(15) = HyperMapPy_hyper_map[ones_like_leaf]{fn_leaf=MultitypeFuncGraph_ones_like_leaf{(TypeType), (CSRTensor), (Number), (COOTensor), (Tensor), (Func), (NoneType)}}(%3)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+  %6(15) = %4(%5)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+  %7(15) = TupleGetItem(%6, I64(0))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+  %8(15) = Partial[side_effect_propagate: I64(1)](MultitypeFuncGraph_env_get{(EnvType, Tensor), (EnvType, MapTensor)}, %7)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+  %9(15) = HyperMap_hyper_map(%8, %para-1_21)
+      : (<null>, <Tuple[Ref[Tensor[Float32]]*10], TupleShape((64, 1, 9, 9), (64), (32, 64, 1, 1), (32), (1, 32, 5, 5), (1), (64), (64), (32), (32))>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+  %10(15) = MakeTuple(%3, %9)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+  Return(%10)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\base.py:589/                        return grad_(fn, weights)(*args)/
+}
+# Order:
+#   1: @grad_forward_fn_11:15{[0]: 15, [1]: param_grad_forward_fn, [2]: param_grad_forward_fn}
+#   2: @grad_forward_fn_11:15{[0]: ValueNode<Primitive> TupleGetItem, [1]: 15, [2]: ValueNode<Int64Imm> 0}
+#   3: @grad_forward_fn_11:15{[0]: ValueNode<Primitive> TupleGetItem, [1]: 15, [2]: ValueNode<Int64Imm> 1}
+#   4: @grad_forward_fn_11:15{[0]: ValueNode<HyperMapPy> MetaFuncGraph-hyper_map[ones_like_leaf].22, [1]: 15}
+#   5: @grad_forward_fn_11:15{[0]: 15, [1]: 15}
+#   6: @grad_forward_fn_11:15{[0]: ValueNode<Primitive> TupleGetItem, [1]: 15, [2]: ValueNode<Int64Imm> 0}
+#   7: @grad_forward_fn_11:15{[0]: ValueNode<Primitive> Partial, [1]: ValueNode<MultitypeFuncGraph> MetaFuncGraph-env_get.23, [2]: 15}
+#   8: @grad_forward_fn_11:15{[0]: ValueNode<HyperMap> MetaFuncGraph-hyper_map.24, [1]: 15, [2]: param_21}
+#   9: @grad_forward_fn_11:15{[0]: ValueNode<Primitive> MakeTuple, [1]: 15, [2]: 15}
+#  10: @grad_forward_fn_11:15{[0]: ValueNode<Primitive> Return, [1]: 15}
+
+
+subgraph attr:
+defer_inline : 1
+subgraph instance: forward_fn_3 : 000001ED08E57440
+# In file E:\mindspore\srcnn\trainsrcnn.py:39/def forward_fn(x, label):/
+subgraph @forward_fn_3 parent: [subgraph @after_grad_7](%para21_x, %para22_label) {
+  %1(out) = call @mysrcnn_SrCnn_construct_25(%para21_x)
+      : (<Tensor[Float32], (4, 1, 64, 64)>) -> (<Tensor[Float32], (4, 1, 52, 52)>)
+      #scope: (Default)
+      # In file E:\mindspore\srcnn\trainsrcnn.py:40/    out = network(x)/
+
+#------------------------> 3
+  %2(loss) = call @mindspore_nn_loss_loss_MSELoss_construct_12(%1, %para22_label)
+      : (<Tensor[Float32], (4, 1, 52, 52)>, <Tensor[Float32], (4, 1, 20, 20)>) -> (<null>)
+      #scope: (Default)
+      # In file E:\mindspore\srcnn\trainsrcnn.py:41/    loss = loss_fn(out, label)/
+  Return(%2)
+      : (<null>)
+      #scope: (Default)
+      # In file E:\mindspore\srcnn\trainsrcnn.py:42/    return loss/
+}
+# Order:
+#   1: @forward_fn_3:out{[0]: ValueNode<FuncGraph> mysrcnn_SrCnn_construct_25, [1]: param_x}
+#   2: @forward_fn_3:loss{[0]: ValueNode<FuncGraph> mindspore_nn_loss_loss_MSELoss_construct_12, [1]: out, [2]: param_label}
+#   3: @forward_fn_3:CNode_26{[0]: ValueNode<Primitive> Return, [1]: loss}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_loss_loss_MSELoss_construct_12 : 000001ED08FB2030
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:315/    def construct(self, logits, labels):/
+subgraph @mindspore_nn_loss_loss_MSELoss_construct_12(%para23_logits, %para24_labels) {
+  %1(CNode_27) = S_Prim__check_is_tensor[constexpr_prim: Bool(1)]("logits", %para23_logits, "MSELoss")
+      : (<String, NoShape>, <Tensor[Float32], (4, 1, 52, 52)>, <String, NoShape>) -> (<None, NoShape>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:316/        _check_is_tensor('logits', logits, self.cls_name)/
+  %2(CNode_28) = S_Prim__check_is_tensor[constexpr_prim: Bool(1)]("labels", %para24_labels, "MSELoss")
+      : (<String, NoShape>, <Tensor[Float32], (4, 1, 20, 20)>, <String, NoShape>) -> (<None, NoShape>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:317/        _check_is_tensor('labels', labels, self.cls_name)/
+  %3(CNode_29) = MakeTuple(%1, %2)
+      : (<None, NoShape>, <None, NoShape>) -> (<Tuple[None*2], TupleShape(NoShape, NoShape)>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:315/    def construct(self, logits, labels):/
+  %4(CNode_30) = StopGradient(%3)
+      : (<Tuple[None*2], TupleShape(NoShape, NoShape)>) -> (<Tuple[None*2], TupleShape(NoShape, NoShape)>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:315/    def construct(self, logits, labels):/
+
+#------------------------> 4
+  %5(CNode_31) = S_Prim_sub(%para23_logits, %para24_labels)
+      : (<Tensor[Float32], (4, 1, 52, 52)>, <Tensor[Float32], (4, 1, 20, 20)>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:318/        x = F.square(logits - labels)/
+  %6(x) = call @square_32(%5)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:318/        x = F.square(logits - labels)/
+  %7(CNode_34) = call @get_loss_33(%6)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:319/        return self.get_loss(x)/
+  %8(CNode_35) = Depend[side_effect_propagate: I64(1)](%7, %4)
+      : (<null>, <Tuple[None*2], TupleShape(NoShape, NoShape)>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:319/        return self.get_loss(x)/
+  Return(%8)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:319/        return self.get_loss(x)/
+}
+# Order:
+#   1: @mindspore_nn_loss_loss_MSELoss_construct_12:CNode_27{[0]: ValueNode<DoSignaturePrimitive> S_Prim__check_is_tensor, [1]: ValueNode<StringImm> logits, [2]: param_logits, [3]: ValueNode<StringImm> MSELoss}
+#   2: @mindspore_nn_loss_loss_MSELoss_construct_12:CNode_28{[0]: ValueNode<DoSignaturePrimitive> S_Prim__check_is_tensor, [1]: ValueNode<StringImm> labels, [2]: param_labels, [3]: ValueNode<StringImm> MSELoss}
+#   3: @mindspore_nn_loss_loss_MSELoss_construct_12:CNode_31{[0]: ValueNode<DoSignaturePrimitive> S_Prim_sub, [1]: param_logits, [2]: param_labels}
+#   4: @mindspore_nn_loss_loss_MSELoss_construct_12:x{[0]: ValueNode<FuncGraph> square_32, [1]: CNode_31}
+#   5: @mindspore_nn_loss_loss_MSELoss_construct_12:CNode_34{[0]: ValueNode<FuncGraph> get_loss_33, [1]: x}
+#   6: @mindspore_nn_loss_loss_MSELoss_construct_12:CNode_36{[0]: ValueNode<Primitive> Return, [1]: CNode_35}
+
+
+subgraph attr:
+subgraph instance: _sub_tensor_13 : 000001ED08FB7530
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\composite\multitype_ops\sub_impl.py:40/def _sub_tensor(x, y):/
+subgraph @_sub_tensor_13(%para25_x, %para26_y) {
+  %1(CNode_31) = resolve(SymbolStr, F)
+      : (<External, NoShape>, <External, NoShape>) -> (<External, NoShape>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:318/        x = F.square(logits - labels)/
+  %2(CNode_31) = getattr(%1, "tensor_sub")
+      : (<External, NoShape>, <String, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:318/        x = F.square(logits - labels)/
+
+#------------------------> 5
+  %3(CNode_31) = %2(%para25_x, %para26_y)
+      : (<Tensor[Float32], (4, 1, 52, 52)>, <Tensor[Float32], (4, 1, 20, 20)>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:318/        x = F.square(logits - labels)/
+  Return(%3)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:318/        x = F.square(logits - labels)/
+}
+# Order:
+#   1: @_sub_tensor_13:CNode_31{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> SymbolStr: 'Namespace:mindspore.ops.composite.multitype_ops.sub_impl', [2]: ValueNode<Symbol> F}
+#   2: @_sub_tensor_13:CNode_31{[0]: ValueNode<Primitive> getattr, [1]: CNode_31, [2]: ValueNode<StringImm> tensor_sub}
+#   3: @_sub_tensor_37:CNode_38{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#   4: @_sub_tensor_37:CNode_39{[0]: CNode_38, [1]: param_x, [2]: param_y}
+#   5: @_sub_tensor_13:CNode_31{[0]: CNode_31, [1]: param_x, [2]: param_y}
+#   6: @_sub_tensor_13:CNode_31{[0]: ValueNode<Primitive> Return, [1]: CNode_31}
+
+
+# ===============================================================================================
+# The total of function graphs in evaluation stack: 6/8 (Ignored 2 internal frames).
+# ===============================================================================================
+
+
+# ===============================================================================================
+# The rest function graphs are the following:
+# ===============================================================================================
+subgraph attr:
+subgraph instance: mysrcnn_SrCnn_construct_25 : 000001ED08E5A410
+# In file E:\mindspore\srcnn\mysrcnn.py:18/    def construct(self, x):/
+subgraph @mysrcnn_SrCnn_construct_25 parent: [subgraph @after_grad_7](%para27_x) {
+  %1(CNode_41) = call @mindspore_nn_layer_conv_Conv2d_construct_40(%para27_x)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file E:\mindspore\srcnn\mysrcnn.py:19/        x = self.relu(self.norm1(self.conv1(x)))/
+  %2(CNode_43) = call @mindspore_nn_layer_normalization_BatchNorm2d_construct_42(%1)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file E:\mindspore\srcnn\mysrcnn.py:19/        x = self.relu(self.norm1(self.conv1(x)))/
+  %3(x) = call @mindspore_nn_layer_activation_ReLU_construct_44(%2)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file E:\mindspore\srcnn\mysrcnn.py:19/        x = self.relu(self.norm1(self.conv1(x)))/
+  %4(CNode_46) = call @mindspore_nn_layer_conv_Conv2d_construct_45(%3)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file E:\mindspore\srcnn\mysrcnn.py:20/        x = self.relu(self.norm2(self.conv2(x)))/
+  %5(CNode_48) = call @mindspore_nn_layer_normalization_BatchNorm2d_construct_47(%4)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file E:\mindspore\srcnn\mysrcnn.py:20/        x = self.relu(self.norm2(self.conv2(x)))/
+  %6(x) = call @mindspore_nn_layer_activation_ReLU_construct_44(%5)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file E:\mindspore\srcnn\mysrcnn.py:20/        x = self.relu(self.norm2(self.conv2(x)))/
+  %7(x) = call @mindspore_nn_layer_conv_Conv2d_construct_49(%6)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file E:\mindspore\srcnn\mysrcnn.py:21/        x = self.conv3(x)/
+  Return(%7)
+      : (<null>)
+      #scope: (Default)
+      # In file E:\mindspore\srcnn\mysrcnn.py:22/        return x/
+}
+# Order:
+#   1: @mysrcnn_SrCnn_construct_25:CNode_41{[0]: ValueNode<FuncGraph> mindspore_nn_layer_conv_Conv2d_construct_40, [1]: param_x}
+#   2: @mysrcnn_SrCnn_construct_25:CNode_43{[0]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_42, [1]: CNode_41}
+#   3: @mysrcnn_SrCnn_construct_25:x{[0]: ValueNode<FuncGraph> mindspore_nn_layer_activation_ReLU_construct_44, [1]: CNode_43}
+#   4: @mysrcnn_SrCnn_construct_25:CNode_46{[0]: ValueNode<FuncGraph> mindspore_nn_layer_conv_Conv2d_construct_45, [1]: x}
+#   5: @mysrcnn_SrCnn_construct_25:CNode_48{[0]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_47, [1]: CNode_46}
+#   6: @mysrcnn_SrCnn_construct_25:x{[0]: ValueNode<FuncGraph> mindspore_nn_layer_activation_ReLU_construct_44, [1]: CNode_48}
+#   7: @mysrcnn_SrCnn_construct_25:x{[0]: ValueNode<FuncGraph> mindspore_nn_layer_conv_Conv2d_construct_49, [1]: x}
+#   8: @mysrcnn_SrCnn_construct_25:CNode_50{[0]: ValueNode<Primitive> Return, [1]: x}
+
+
+subgraph attr:
+subgraph instance: get_loss_33 : 000001ED08FAEB10
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:125/    def get_loss(self, x, weights=1.0):/
+subgraph @get_loss_33(%para28_x, %para29_weights) {
+  %1(CNode_52) = call @get_loss_51()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:143/        if self.reduce and self.average:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:143/        if self.reduce and self.average:/
+}
+# Order:
+#   1: @get_loss_33:input_dtype{[0]: ValueNode<Primitive> getattr, [1]: param_x, [2]: ValueNode<StringImm> dtype}
+#   2: @get_loss_33:x{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Cast, [1]: param_x, [2]: ValueNode<Float> Float32}
+#   3: @get_loss_33:weights{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Cast, [1]: param_weights, [2]: ValueNode<Float> Float32}
+#   4: @get_loss_33:x{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Mul, [1]: weights, [2]: x}
+#   5: @get_loss_33:CNode_52{[0]: ValueNode<FuncGraph> get_loss_51}
+#   6: @get_loss_33:CNode_53{[0]: ValueNode<Primitive> Return, [1]: CNode_52}
+
+
+subgraph attr:
+subgraph instance: square_32 : 000001ED08FB3570
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\function\math_func.py:6081/def square(input):/
+subgraph @square_32(%para30_input) {
+  %1(CNode_54) = S_Prim_Square[input_names: ["input_x"], output_names: ["output"]](%para30_input)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\function\math_func.py:6110/    return square_(input)/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\function\math_func.py:6110/    return square_(input)/
+}
+# Order:
+#   1: @square_32:CNode_54{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Square, [1]: param_input}
+#   2: @square_32:CNode_55{[0]: ValueNode<Primitive> Return, [1]: CNode_54}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_conv_Conv2d_construct_49 : 000001ED08FAC5E0
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:360/    def construct(self, x):/
+subgraph @mindspore_nn_layer_conv_Conv2d_construct_49 parent: [subgraph @after_grad_7](%para31_x) {
+  %1(CNode_57) = call @mindspore_nn_layer_conv_Conv2d_construct_56()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:362/        if self.has_bias:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:362/        if self.has_bias:/
+}
+# Order:
+#   1: @mindspore_nn_layer_conv_Conv2d_construct_49:output{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Conv2D, [1]: param_x, [2]: param_conv3.weight}
+#   2: @mindspore_nn_layer_conv_Conv2d_construct_49:CNode_57{[0]: ValueNode<FuncGraph> mindspore_nn_layer_conv_Conv2d_construct_56}
+#   3: @mindspore_nn_layer_conv_Conv2d_construct_49:CNode_58{[0]: ValueNode<Primitive> Return, [1]: CNode_57}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_activation_ReLU_construct_44 : 000001ED08FB1AE0
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\activation.py:437/    def construct(self, x):/
+subgraph @mindspore_nn_layer_activation_ReLU_construct_44(%para32_x) {
+  %1(CNode_59) = S_Prim_ReLU[input_names: ["x"], output_names: ["output"]](%para32_x)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\activation.py:438/        return self.relu(x)/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\activation.py:438/        return self.relu(x)/
+}
+# Order:
+#   1: @mindspore_nn_layer_activation_ReLU_construct_44:CNode_59{[0]: ValueNode<DoSignaturePrimitive> S_Prim_ReLU, [1]: param_x}
+#   2: @mindspore_nn_layer_activation_ReLU_construct_44:CNode_60{[0]: ValueNode<Primitive> Return, [1]: CNode_59}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_47 : 000001ED08E5C3F0
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_47 parent: [subgraph @after_grad_7](%para33_x) {
+  %1(CNode_61) = S_Prim_Shape(%para33_x)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:139/        self._check_input_dim(self.shape(x), self.cls_name)/
+  %2(CNode_62) = S_Prim__check_input_dim[constexpr_prim: Bool(1)](%1, "BatchNorm2d")
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:139/        self._check_input_dim(self.shape(x), self.cls_name)/
+  %3(CNode_63) = StopGradient(%2)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+  %4(CNode_64) = S_Prim_is_(None, None)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:140/        if self.use_batch_statistics is None:/
+  %5(CNode_65) = Cond(%4, Bool(0))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:140/        if self.use_batch_statistics is None:/
+  %6(CNode_66) = Switch(%5, @mindspore_nn_layer_normalization_BatchNorm2d_construct_67, @mindspore_nn_layer_normalization_BatchNorm2d_construct_68)
+      : (<null>, <null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:140/        if self.use_batch_statistics is None:/
+  %7(CNode_69) = %6()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:140/        if self.use_batch_statistics is None:/
+  %8(CNode_70) = Depend[side_effect_propagate: I64(1)](%7, %3)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:140/        if self.use_batch_statistics is None:/
+  Return(%8)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:140/        if self.use_batch_statistics is None:/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_47:CNode_61{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Shape, [1]: param_x}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_47:CNode_62{[0]: ValueNode<DoSignaturePrimitive> S_Prim__check_input_dim, [1]: CNode_61, [2]: ValueNode<StringImm> BatchNorm2d}
+#   3: @mindspore_nn_layer_normalization_BatchNorm2d_construct_47:CNode_64{[0]: ValueNode<DoSignaturePrimitive> S_Prim_is_, [1]: ValueNode<None> None, [2]: ValueNode<None> None}
+#   4: @mindspore_nn_layer_normalization_BatchNorm2d_construct_47:CNode_65{[0]: ValueNode<Primitive> Cond, [1]: CNode_64, [2]: ValueNode<BoolImm> false}
+#   5: @mindspore_nn_layer_normalization_BatchNorm2d_construct_47:CNode_66{[0]: ValueNode<Primitive> Switch, [1]: CNode_65, [2]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_67, [3]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_68}
+#   6: @mindspore_nn_layer_normalization_BatchNorm2d_construct_47:CNode_69{[0]: CNode_66}
+#   7: @mindspore_nn_layer_normalization_BatchNorm2d_construct_47:CNode_71{[0]: ValueNode<Primitive> Return, [1]: CNode_70}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_conv_Conv2d_construct_45 : 000001ED08E5E3D0
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:360/    def construct(self, x):/
+subgraph @mindspore_nn_layer_conv_Conv2d_construct_45 parent: [subgraph @after_grad_7](%para34_x) {
+  %1(CNode_73) = call @mindspore_nn_layer_conv_Conv2d_construct_72()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:362/        if self.has_bias:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:362/        if self.has_bias:/
+}
+# Order:
+#   1: @mindspore_nn_layer_conv_Conv2d_construct_45:output{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Conv2D, [1]: param_x, [2]: param_conv2.weight}
+#   2: @mindspore_nn_layer_conv_Conv2d_construct_45:CNode_73{[0]: ValueNode<FuncGraph> mindspore_nn_layer_conv_Conv2d_construct_72}
+#   3: @mindspore_nn_layer_conv_Conv2d_construct_45:CNode_74{[0]: ValueNode<Primitive> Return, [1]: CNode_73}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_42 : 000001ED08E5DE80
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_42 parent: [subgraph @after_grad_7](%para35_x) {
+  %1(CNode_75) = S_Prim_Shape(%para35_x)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:139/        self._check_input_dim(self.shape(x), self.cls_name)/
+  %2(CNode_76) = S_Prim__check_input_dim[constexpr_prim: Bool(1)](%1, "BatchNorm2d")
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:139/        self._check_input_dim(self.shape(x), self.cls_name)/
+  %3(CNode_77) = StopGradient(%2)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+  %4(CNode_78) = S_Prim_is_(None, None)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:140/        if self.use_batch_statistics is None:/
+  %5(CNode_79) = Cond(%4, Bool(0))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:140/        if self.use_batch_statistics is None:/
+  %6(CNode_80) = Switch(%5, @mindspore_nn_layer_normalization_BatchNorm2d_construct_81, @mindspore_nn_layer_normalization_BatchNorm2d_construct_82)
+      : (<null>, <null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:140/        if self.use_batch_statistics is None:/
+  %7(CNode_83) = %6()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:140/        if self.use_batch_statistics is None:/
+  %8(CNode_84) = Depend[side_effect_propagate: I64(1)](%7, %3)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:140/        if self.use_batch_statistics is None:/
+  Return(%8)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:140/        if self.use_batch_statistics is None:/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_42:CNode_75{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Shape, [1]: param_x}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_42:CNode_76{[0]: ValueNode<DoSignaturePrimitive> S_Prim__check_input_dim, [1]: CNode_75, [2]: ValueNode<StringImm> BatchNorm2d}
+#   3: @mindspore_nn_layer_normalization_BatchNorm2d_construct_42:CNode_78{[0]: ValueNode<DoSignaturePrimitive> S_Prim_is_, [1]: ValueNode<None> None, [2]: ValueNode<None> None}
+#   4: @mindspore_nn_layer_normalization_BatchNorm2d_construct_42:CNode_79{[0]: ValueNode<Primitive> Cond, [1]: CNode_78, [2]: ValueNode<BoolImm> false}
+#   5: @mindspore_nn_layer_normalization_BatchNorm2d_construct_42:CNode_80{[0]: ValueNode<Primitive> Switch, [1]: CNode_79, [2]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_81, [3]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_82}
+#   6: @mindspore_nn_layer_normalization_BatchNorm2d_construct_42:CNode_83{[0]: CNode_80}
+#   7: @mindspore_nn_layer_normalization_BatchNorm2d_construct_42:CNode_85{[0]: ValueNode<Primitive> Return, [1]: CNode_84}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_conv_Conv2d_construct_40 : 000001ED08E58ED0
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:360/    def construct(self, x):/
+subgraph @mindspore_nn_layer_conv_Conv2d_construct_40 parent: [subgraph @after_grad_7](%para36_x) {
+  %1(CNode_87) = call @mindspore_nn_layer_conv_Conv2d_construct_86()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:362/        if self.has_bias:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:362/        if self.has_bias:/
+}
+# Order:
+#   1: @mindspore_nn_layer_conv_Conv2d_construct_40:output{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Conv2D, [1]: param_x, [2]: param_conv1.weight}
+#   2: @mindspore_nn_layer_conv_Conv2d_construct_40:CNode_87{[0]: ValueNode<FuncGraph> mindspore_nn_layer_conv_Conv2d_construct_86}
+#   3: @mindspore_nn_layer_conv_Conv2d_construct_40:CNode_88{[0]: ValueNode<Primitive> Return, [1]: CNode_87}
+
+
+subgraph attr:
+subgraph instance: get_loss_51 : 000001ED08FAE070
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:125/    def get_loss(self, x, weights=1.0):/
+subgraph @get_loss_51 parent: [subgraph @get_loss_33]() {
+  %1(CNode_90) = call @get_loss_89()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:144/            x = self.reduce_mean(x, self.get_axis(x))/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:144/            x = self.reduce_mean(x, self.get_axis(x))/
+}
+# Order:
+#   1: @get_loss_51:CNode_91{[0]: ValueNode<FuncGraph> get_axis_92, [1]: x}
+#   2: @get_loss_51:x{[0]: ValueNode<DoSignaturePrimitive> S_Prim_ReduceMean, [1]: x, [2]: CNode_91}
+#   3: @get_loss_51:CNode_90{[0]: ValueNode<FuncGraph> get_loss_89}
+#   4: @get_loss_51:CNode_93{[0]: ValueNode<Primitive> Return, [1]: CNode_90}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_conv_Conv2d_construct_56 : 000001ED08FAC090
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:360/    def construct(self, x):/
+subgraph @mindspore_nn_layer_conv_Conv2d_construct_56 parent: [subgraph @mindspore_nn_layer_conv_Conv2d_construct_49]() {
+  %1(CNode_95) = call @mindspore_nn_layer_conv_Conv2d_construct_94()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:363/            output = self.bias_add(output, self.bias)/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:363/            output = self.bias_add(output, self.bias)/
+}
+# Order:
+#   1: @mindspore_nn_layer_conv_Conv2d_construct_56:output{[0]: ValueNode<DoSignaturePrimitive> S_Prim_BiasAdd, [1]: output, [2]: param_conv3.bias}
+#   2: @mindspore_nn_layer_conv_Conv2d_construct_56:CNode_95{[0]: ValueNode<FuncGraph> mindspore_nn_layer_conv_Conv2d_construct_94}
+#   3: @mindspore_nn_layer_conv_Conv2d_construct_56:CNode_96{[0]: ValueNode<Primitive> Return, [1]: CNode_95}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_67 : 000001ED08FB2AD0
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_67 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_47]() {
+  %1(CNode_98) = call @mindspore_nn_layer_normalization_BatchNorm2d_construct_97()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:141/            if self.training:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:141/            if self.training:/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_67:CNode_98{[0]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_97}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_67:CNode_99{[0]: ValueNode<Primitive> Return, [1]: CNode_98}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_68 : 000001ED08E5B400
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_68 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_47]() {
+  %1(CNode_101) = call @mindspore_nn_layer_normalization_BatchNorm2d_construct_100()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:140/        if self.use_batch_statistics is None:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:140/        if self.use_batch_statistics is None:/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_68:CNode_101{[0]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_100}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_68:CNode_102{[0]: ValueNode<Primitive> Return, [1]: CNode_101}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_conv_Conv2d_construct_72 : 000001ED08E5E920
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:360/    def construct(self, x):/
+subgraph @mindspore_nn_layer_conv_Conv2d_construct_72 parent: [subgraph @mindspore_nn_layer_conv_Conv2d_construct_45]() {
+  %1(CNode_104) = call @mindspore_nn_layer_conv_Conv2d_construct_103()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:363/            output = self.bias_add(output, self.bias)/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:363/            output = self.bias_add(output, self.bias)/
+}
+# Order:
+#   1: @mindspore_nn_layer_conv_Conv2d_construct_72:output{[0]: ValueNode<DoSignaturePrimitive> S_Prim_BiasAdd, [1]: output, [2]: param_conv2.bias}
+#   2: @mindspore_nn_layer_conv_Conv2d_construct_72:CNode_104{[0]: ValueNode<FuncGraph> mindspore_nn_layer_conv_Conv2d_construct_103}
+#   3: @mindspore_nn_layer_conv_Conv2d_construct_72:CNode_105{[0]: ValueNode<Primitive> Return, [1]: CNode_104}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_81 : 000001ED08E5A960
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_81 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_42]() {
+  %1(CNode_107) = call @mindspore_nn_layer_normalization_BatchNorm2d_construct_106()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:141/            if self.training:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:141/            if self.training:/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_81:CNode_107{[0]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_106}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_81:CNode_108{[0]: ValueNode<Primitive> Return, [1]: CNode_107}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_82 : 000001ED08E59420
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_82 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_42]() {
+  %1(CNode_110) = call @mindspore_nn_layer_normalization_BatchNorm2d_construct_109()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:140/        if self.use_batch_statistics is None:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:140/        if self.use_batch_statistics is None:/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_82:CNode_110{[0]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_109}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_82:CNode_111{[0]: ValueNode<Primitive> Return, [1]: CNode_110}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_conv_Conv2d_construct_86 : 000001ED08E5D3E0
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:360/    def construct(self, x):/
+subgraph @mindspore_nn_layer_conv_Conv2d_construct_86 parent: [subgraph @mindspore_nn_layer_conv_Conv2d_construct_40]() {
+  %1(CNode_113) = call @mindspore_nn_layer_conv_Conv2d_construct_112()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:363/            output = self.bias_add(output, self.bias)/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:363/            output = self.bias_add(output, self.bias)/
+}
+# Order:
+#   1: @mindspore_nn_layer_conv_Conv2d_construct_86:output{[0]: ValueNode<DoSignaturePrimitive> S_Prim_BiasAdd, [1]: output, [2]: param_conv1.bias}
+#   2: @mindspore_nn_layer_conv_Conv2d_construct_86:CNode_113{[0]: ValueNode<FuncGraph> mindspore_nn_layer_conv_Conv2d_construct_112}
+#   3: @mindspore_nn_layer_conv_Conv2d_construct_86:CNode_114{[0]: ValueNode<Primitive> Return, [1]: CNode_113}
+
+
+subgraph attr:
+subgraph instance: get_axis_92 : 000001ED08FAD080
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:113/    def get_axis(self, x):/
+subgraph @get_axis_92(%para37_x) {
+  %1(shape) = call @shape_115(%para37_x)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:120/        shape = F.shape(x)/
+  %2(length) = S_Prim_sequence_len(%1)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:121/        length = F.tuple_len(shape)/
+  %3(perm) = S_Prim_make_range(I64(0), %2)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:122/        perm = F.make_range(0, length)/
+  Return(%3)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:123/        return perm/
+}
+# Order:
+#   1: @get_axis_92:shape{[0]: ValueNode<FuncGraph> shape_115, [1]: param_x}
+#   2: @get_axis_92:length{[0]: ValueNode<DoSignaturePrimitive> S_Prim_sequence_len, [1]: shape}
+#   3: @get_axis_92:perm{[0]: ValueNode<DoSignaturePrimitive> S_Prim_make_range, [1]: ValueNode<Int64Imm> 0, [2]: length}
+#   4: @get_axis_92:CNode_116{[0]: ValueNode<Primitive> Return, [1]: perm}
+
+
+subgraph attr:
+subgraph instance: get_loss_89 : 000001ED08FB05A0
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:125/    def get_loss(self, x, weights=1.0):/
+subgraph @get_loss_89 parent: [subgraph @get_loss_51]() {
+  %1(CNode_118) = call @get_loss_117()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:145/        if self.reduce and not self.average:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:145/        if self.reduce and not self.average:/
+}
+# Order:
+#   1: @get_loss_89:CNode_118{[0]: ValueNode<FuncGraph> get_loss_117}
+#   2: @get_loss_89:CNode_119{[0]: ValueNode<Primitive> Return, [1]: CNode_118}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_conv_Conv2d_construct_94 : 000001ED08FB0050
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:360/    def construct(self, x):/
+subgraph @mindspore_nn_layer_conv_Conv2d_construct_94 parent: [subgraph @mindspore_nn_layer_conv_Conv2d_construct_56]() {
+  %1(output) = $(mindspore_nn_layer_conv_Conv2d_construct_49):S_Prim_Conv2D[out_channel: I64(1), kernel_size: (I64(5), I64(5)), group: I64(1), format: "NCHW", mode: I64(1), pad: (I64(0), I64(0), I64(0), I64(0)), pad_mode: I64(0), stride: (I64(1), I64(1), I64(1), I64(1)), dilation: (I64(1), I64(1), I64(1), I64(1)), input_names: ["x", "w"], output_names: ["output"], groups: I64(1), pad_list: (I64(0), I64(0), I64(0), I64(0))](%para31_x, %para7_conv3.weight)
+      : (<null>, <Ref[Tensor[Float32]], (1, 32, 5, 5), ref_key=:conv3.weight>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:361/        output = self.conv2d(x, self.weight)/
+  %2(output) = $(mindspore_nn_layer_conv_Conv2d_construct_56):S_Prim_BiasAdd[format: "NCHW", input_names: ["x", "b"], output_names: ["output"], data_format: "NCHW"](%1, %para8_conv3.bias)
+      : (<null>, <Ref[Tensor[Float32]], (1), ref_key=:conv3.bias>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:363/            output = self.bias_add(output, self.bias)/
+  Return(%2)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:364/        return output/
+}
+# Order:
+#   1: @mindspore_nn_layer_conv_Conv2d_construct_94:CNode_120{[0]: ValueNode<Primitive> Return, [1]: output}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_97 : 000001ED08FB1590
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_97 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_47]() {
+  %1(CNode_122) = call @mindspore_nn_layer_normalization_BatchNorm2d_construct_121()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:141/            if self.training:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:141/            if self.training:/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_97:CNode_122{[0]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_121}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_97:CNode_123{[0]: ValueNode<Primitive> Return, [1]: CNode_122}
+
+
+subgraph attr:
+after_block : 1
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_100 : 000001ED08E5B950
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_100 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_47]() {
+  %1(CNode_124) = Cond(None, Bool(0))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:154/        if self.use_batch_statistics:/
+  %2(CNode_125) = Switch(%1, @mindspore_nn_layer_normalization_BatchNorm2d_construct_126, @mindspore_nn_layer_normalization_BatchNorm2d_construct_127)
+      : (<null>, <null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:154/        if self.use_batch_statistics:/
+  %3(CNode_128) = %2()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:154/        if self.use_batch_statistics:/
+  Return(%3)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:154/        if self.use_batch_statistics:/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_100:CNode_124{[0]: ValueNode<Primitive> Cond, [1]: ValueNode<None> None, [2]: ValueNode<BoolImm> false}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_100:CNode_125{[0]: ValueNode<Primitive> Switch, [1]: CNode_124, [2]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_126, [3]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_127}
+#   3: @mindspore_nn_layer_normalization_BatchNorm2d_construct_100:CNode_128{[0]: CNode_125}
+#   4: @mindspore_nn_layer_normalization_BatchNorm2d_construct_100:CNode_129{[0]: ValueNode<Primitive> Return, [1]: CNode_128}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_conv_Conv2d_construct_103 : 000001ED08E5AEB0
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:360/    def construct(self, x):/
+subgraph @mindspore_nn_layer_conv_Conv2d_construct_103 parent: [subgraph @mindspore_nn_layer_conv_Conv2d_construct_72]() {
+  %1(output) = $(mindspore_nn_layer_conv_Conv2d_construct_45):S_Prim_Conv2D[out_channel: I64(32), kernel_size: (I64(1), I64(1)), group: I64(1), format: "NCHW", mode: I64(1), pad: (I64(0), I64(0), I64(0), I64(0)), pad_mode: I64(0), stride: (I64(1), I64(1), I64(1), I64(1)), dilation: (I64(1), I64(1), I64(1), I64(1)), input_names: ["x", "w"], output_names: ["output"], groups: I64(1), pad_list: (I64(0), I64(0), I64(0), I64(0))](%para34_x, %para5_conv2.weight)
+      : (<null>, <Ref[Tensor[Float32]], (32, 64, 1, 1), ref_key=:conv2.weight>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:361/        output = self.conv2d(x, self.weight)/
+  %2(output) = $(mindspore_nn_layer_conv_Conv2d_construct_72):S_Prim_BiasAdd[format: "NCHW", input_names: ["x", "b"], output_names: ["output"], data_format: "NCHW"](%1, %para6_conv2.bias)
+      : (<null>, <Ref[Tensor[Float32]], (32), ref_key=:conv2.bias>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:363/            output = self.bias_add(output, self.bias)/
+  Return(%2)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:364/        return output/
+}
+# Order:
+#   1: @mindspore_nn_layer_conv_Conv2d_construct_103:CNode_130{[0]: ValueNode<Primitive> Return, [1]: output}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_106 : 000001ED08E58430
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_106 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_42]() {
+  %1(CNode_132) = call @mindspore_nn_layer_normalization_BatchNorm2d_construct_131()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:141/            if self.training:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:141/            if self.training:/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_106:CNode_132{[0]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_131}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_106:CNode_133{[0]: ValueNode<Primitive> Return, [1]: CNode_132}
+
+
+subgraph attr:
+after_block : 1
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_109 : 000001ED08E57990
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_109 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_42]() {
+  %1(CNode_134) = Cond(None, Bool(0))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:154/        if self.use_batch_statistics:/
+  %2(CNode_135) = Switch(%1, @mindspore_nn_layer_normalization_BatchNorm2d_construct_136, @mindspore_nn_layer_normalization_BatchNorm2d_construct_137)
+      : (<null>, <null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:154/        if self.use_batch_statistics:/
+  %3(CNode_138) = %2()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:154/        if self.use_batch_statistics:/
+  Return(%3)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:154/        if self.use_batch_statistics:/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_109:CNode_134{[0]: ValueNode<Primitive> Cond, [1]: ValueNode<None> None, [2]: ValueNode<BoolImm> false}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_109:CNode_135{[0]: ValueNode<Primitive> Switch, [1]: CNode_134, [2]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_136, [3]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_137}
+#   3: @mindspore_nn_layer_normalization_BatchNorm2d_construct_109:CNode_138{[0]: CNode_135}
+#   4: @mindspore_nn_layer_normalization_BatchNorm2d_construct_109:CNode_139{[0]: ValueNode<Primitive> Return, [1]: CNode_138}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_conv_Conv2d_construct_112 : 000001ED08E5D930
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:360/    def construct(self, x):/
+subgraph @mindspore_nn_layer_conv_Conv2d_construct_112 parent: [subgraph @mindspore_nn_layer_conv_Conv2d_construct_86]() {
+  %1(output) = $(mindspore_nn_layer_conv_Conv2d_construct_40):S_Prim_Conv2D[out_channel: I64(64), kernel_size: (I64(9), I64(9)), group: I64(1), format: "NCHW", mode: I64(1), pad: (I64(0), I64(0), I64(0), I64(0)), pad_mode: I64(0), stride: (I64(1), I64(1), I64(1), I64(1)), dilation: (I64(1), I64(1), I64(1), I64(1)), input_names: ["x", "w"], output_names: ["output"], groups: I64(1), pad_list: (I64(0), I64(0), I64(0), I64(0))](%para36_x, %para3_conv1.weight)
+      : (<null>, <Ref[Tensor[Float32]], (64, 1, 9, 9), ref_key=:conv1.weight>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:361/        output = self.conv2d(x, self.weight)/
+  %2(output) = $(mindspore_nn_layer_conv_Conv2d_construct_86):S_Prim_BiasAdd[format: "NCHW", input_names: ["x", "b"], output_names: ["output"], data_format: "NCHW"](%1, %para4_conv1.bias)
+      : (<null>, <Ref[Tensor[Float32]], (64), ref_key=:conv1.bias>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:363/            output = self.bias_add(output, self.bias)/
+  Return(%2)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\conv.py:364/        return output/
+}
+# Order:
+#   1: @mindspore_nn_layer_conv_Conv2d_construct_112:CNode_140{[0]: ValueNode<Primitive> Return, [1]: output}
+
+
+subgraph attr:
+subgraph instance: shape_115 : 000001ED08FB4010
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\function\array_func.py:1484/def shape(input_x):/
+subgraph @shape_115(%para38_input_x) {
+  %1(CNode_141) = S_Prim_Shape(%para38_input_x)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\function\array_func.py:1510/    return shape_(input_x)/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\ops\function\array_func.py:1510/    return shape_(input_x)/
+}
+# Order:
+#   1: @shape_115:CNode_141{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Shape, [1]: param_input_x}
+#   2: @shape_115:CNode_142{[0]: ValueNode<Primitive> Return, [1]: CNode_141}
+
+
+subgraph attr:
+subgraph instance: get_loss_117 : 000001ED08FB3AC0
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:125/    def get_loss(self, x, weights=1.0):/
+subgraph @get_loss_117 parent: [subgraph @get_loss_51]() {
+  %1(CNode_144) = call @get_loss_143()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:145/        if self.reduce and not self.average:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:145/        if self.reduce and not self.average:/
+}
+# Order:
+#   1: @get_loss_117:CNode_144{[0]: ValueNode<FuncGraph> get_loss_143}
+#   2: @get_loss_117:CNode_145{[0]: ValueNode<Primitive> Return, [1]: CNode_144}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_121 : 000001ED08FADB20
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_121 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_47]() {
+  %1(CNode_147) = call @mindspore_nn_layer_normalization_BatchNorm2d_construct_146()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:147/            if not self.training:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:147/            if not self.training:/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_121:CNode_147{[0]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_146}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_121:CNode_148{[0]: ValueNode<Primitive> Return, [1]: CNode_147}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_126 : 000001ED08FB1040
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_126 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_47]() {
+  %1(CNode_149) = S_Prim_BatchNorm[is_training: Bool(1), input_names: ["x", "scale", "offset", "mean", "variance"], epsilon: F32(1e-05), momentum: F32(0.1), format: "NCHW", side_effect_mem: Bool(1), output_names: ["y", "batch_mean", "batch_variance", "reserve_space_1", "reserve_space_2"]](%para33_x, %para11_norm2.gamma, %para12_norm2.beta, %para13_norm2.moving_mean, %para14_norm2.moving_variance)
+      : (<null>, <Ref[Tensor[Float32]], (32), ref_key=:norm2.gamma>, <Ref[Tensor[Float32]], (32), ref_key=:norm2.beta>, <Ref[Tensor[Float32]], (32), ref_key=:norm2.moving_mean>, <Ref[Tensor[Float32]], (32), ref_key=:norm2.moving_variance>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:155/            return self.bn_train(x,/
+  %2(CNode_150) = S_Prim_getitem(%1, I64(0))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:155/            return self.bn_train(x,/
+  Return(%2)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:155/            return self.bn_train(x,/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_126:CNode_149{[0]: ValueNode<DoSignaturePrimitive> S_Prim_BatchNorm, [1]: param_x, [2]: param_norm2.gamma, [3]: param_norm2.beta, [4]: param_norm2.moving_mean, [5]: param_norm2.moving_variance}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_126:CNode_150{[0]: ValueNode<DoSignaturePrimitive> S_Prim_getitem, [1]: CNode_149, [2]: ValueNode<Int64Imm> 0}
+#   3: @mindspore_nn_layer_normalization_BatchNorm2d_construct_126:CNode_151{[0]: ValueNode<Primitive> Return, [1]: CNode_150}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_127 : 000001ED08E5BEA0
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_127 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_47]() {
+  %1(CNode_153) = call @mindspore_nn_layer_normalization_BatchNorm2d_construct_152()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:154/        if self.use_batch_statistics:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:154/        if self.use_batch_statistics:/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_127:CNode_153{[0]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_152}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_127:CNode_154{[0]: ValueNode<Primitive> Return, [1]: CNode_153}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_131 : 000001ED08E5C940
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_131 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_42]() {
+  %1(CNode_156) = call @mindspore_nn_layer_normalization_BatchNorm2d_construct_155()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:147/            if not self.training:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:147/            if not self.training:/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_131:CNode_156{[0]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_155}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_131:CNode_157{[0]: ValueNode<Primitive> Return, [1]: CNode_156}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_136 : 000001ED08E59EC0
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_136 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_42]() {
+  %1(CNode_158) = S_Prim_BatchNorm[is_training: Bool(1), input_names: ["x", "scale", "offset", "mean", "variance"], epsilon: F32(1e-05), momentum: F32(0.1), format: "NCHW", side_effect_mem: Bool(1), output_names: ["y", "batch_mean", "batch_variance", "reserve_space_1", "reserve_space_2"]](%para35_x, %para9_norm1.gamma, %para10_norm1.beta, %para15_norm1.moving_mean, %para16_norm1.moving_variance)
+      : (<null>, <Ref[Tensor[Float32]], (64), ref_key=:norm1.gamma>, <Ref[Tensor[Float32]], (64), ref_key=:norm1.beta>, <Ref[Tensor[Float32]], (64), ref_key=:norm1.moving_mean>, <Ref[Tensor[Float32]], (64), ref_key=:norm1.moving_variance>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:155/            return self.bn_train(x,/
+  %2(CNode_159) = S_Prim_getitem(%1, I64(0))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:155/            return self.bn_train(x,/
+  Return(%2)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:155/            return self.bn_train(x,/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_136:CNode_158{[0]: ValueNode<DoSignaturePrimitive> S_Prim_BatchNorm, [1]: param_x, [2]: param_norm1.gamma, [3]: param_norm1.beta, [4]: param_norm1.moving_mean, [5]: param_norm1.moving_variance}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_136:CNode_159{[0]: ValueNode<DoSignaturePrimitive> S_Prim_getitem, [1]: CNode_158, [2]: ValueNode<Int64Imm> 0}
+#   3: @mindspore_nn_layer_normalization_BatchNorm2d_construct_136:CNode_160{[0]: ValueNode<Primitive> Return, [1]: CNode_159}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_137 : 000001ED08E5EE70
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_137 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_42]() {
+  %1(CNode_162) = call @mindspore_nn_layer_normalization_BatchNorm2d_construct_161()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:154/        if self.use_batch_statistics:/
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:154/        if self.use_batch_statistics:/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_137:CNode_162{[0]: ValueNode<FuncGraph> mindspore_nn_layer_normalization_BatchNorm2d_construct_161}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_137:CNode_163{[0]: ValueNode<Primitive> Return, [1]: CNode_162}
+
+
+subgraph attr:
+subgraph instance: get_loss_143 : 000001ED08FB4560
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:125/    def get_loss(self, x, weights=1.0):/
+subgraph @get_loss_143 parent: [subgraph @get_loss_51]() {
+  %1(weights) = $(get_loss_33):S_Prim_Cast[input_names: ["x", "dst_type"], output_names: ["output"]](%para29_weights, F32)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:141/        weights = self.cast(weights, mstype.float32)/
+  %2(x) = $(get_loss_33):S_Prim_Cast[input_names: ["x", "dst_type"], output_names: ["output"]](%para28_x, F32)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:140/        x = self.cast(x, mstype.float32)/
+  %3(x) = $(get_loss_33):S_Prim_Mul[input_names: ["x", "y"], output_names: ["output"]](%1, %2)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:142/        x = self.mul(weights, x)/
+  %4(CNode_91) = $(get_loss_51):call @get_axis_92(%3)
+      : (<null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:144/            x = self.reduce_mean(x, self.get_axis(x))/
+  %5(x) = $(get_loss_51):S_Prim_ReduceMean[keep_dims: Bool(0), input_names: ["input_x", "axis"], output_names: ["y"]](%3, %4)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:144/            x = self.reduce_mean(x, self.get_axis(x))/
+  %6(input_dtype) = $(get_loss_33):getattr(%para28_x, "dtype")
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:139/        input_dtype = x.dtype/
+  %7(x) = S_Prim_Cast[input_names: ["x", "dst_type"], output_names: ["output"]](%5, %6)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:147/        x = self.cast(x, input_dtype)/
+  Return(%7)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\loss\loss.py:148/        return x/
+}
+# Order:
+#   1: @get_loss_143:x{[0]: ValueNode<DoSignaturePrimitive> S_Prim_Cast, [1]: x, [2]: input_dtype}
+#   2: @get_loss_143:CNode_164{[0]: ValueNode<Primitive> Return, [1]: x}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_146 : 000001ED08FB3020
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_146 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_47]() {
+  %1(CNode_165) = S_Prim_BatchNorm[is_training: Bool(0), input_names: ["x", "scale", "offset", "mean", "variance"], epsilon: F32(1e-05), momentum: F32(0.1), format: "NCHW", output_names: ["y", "batch_mean", "batch_variance", "reserve_space_1", "reserve_space_2"]](%para33_x, %para11_norm2.gamma, %para12_norm2.beta, %para13_norm2.moving_mean, %para14_norm2.moving_variance)
+      : (<null>, <Ref[Tensor[Float32]], (32), ref_key=:norm2.gamma>, <Ref[Tensor[Float32]], (32), ref_key=:norm2.beta>, <Ref[Tensor[Float32]], (32), ref_key=:norm2.moving_mean>, <Ref[Tensor[Float32]], (32), ref_key=:norm2.moving_variance>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:148/                return self.bn_infer(x,/
+  %2(CNode_166) = S_Prim_getitem(%1, I64(0))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:148/                return self.bn_infer(x,/
+  Return(%2)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:148/                return self.bn_infer(x,/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_146:CNode_165{[0]: ValueNode<DoSignaturePrimitive> S_Prim_BatchNorm, [1]: param_x, [2]: param_norm2.gamma, [3]: param_norm2.beta, [4]: param_norm2.moving_mean, [5]: param_norm2.moving_variance}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_146:CNode_166{[0]: ValueNode<DoSignaturePrimitive> S_Prim_getitem, [1]: CNode_165, [2]: ValueNode<Int64Imm> 0}
+#   3: @mindspore_nn_layer_normalization_BatchNorm2d_construct_146:CNode_167{[0]: ValueNode<Primitive> Return, [1]: CNode_166}
+
+
+subgraph attr:
+after_block : 1
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_152 : 000001ED08E58980
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_152 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_47]() {
+  %1(CNode_168) = S_Prim_BatchNorm[is_training: Bool(0), input_names: ["x", "scale", "offset", "mean", "variance"], epsilon: F32(1e-05), momentum: F32(0.1), format: "NCHW", output_names: ["y", "batch_mean", "batch_variance", "reserve_space_1", "reserve_space_2"]](%para33_x, %para11_norm2.gamma, %para12_norm2.beta, %para13_norm2.moving_mean, %para14_norm2.moving_variance)
+      : (<null>, <Ref[Tensor[Float32]], (32), ref_key=:norm2.gamma>, <Ref[Tensor[Float32]], (32), ref_key=:norm2.beta>, <Ref[Tensor[Float32]], (32), ref_key=:norm2.moving_mean>, <Ref[Tensor[Float32]], (32), ref_key=:norm2.moving_variance>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:161/        return self.bn_infer(x,/
+  %2(CNode_169) = S_Prim_getitem(%1, I64(0))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:161/        return self.bn_infer(x,/
+  Return(%2)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:161/        return self.bn_infer(x,/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_152:CNode_168{[0]: ValueNode<DoSignaturePrimitive> S_Prim_BatchNorm, [1]: param_x, [2]: param_norm2.gamma, [3]: param_norm2.beta, [4]: param_norm2.moving_mean, [5]: param_norm2.moving_variance}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_152:CNode_169{[0]: ValueNode<DoSignaturePrimitive> S_Prim_getitem, [1]: CNode_168, [2]: ValueNode<Int64Imm> 0}
+#   3: @mindspore_nn_layer_normalization_BatchNorm2d_construct_152:CNode_170{[0]: ValueNode<Primitive> Return, [1]: CNode_169}
+
+
+subgraph attr:
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_155 : 000001ED08E57EE0
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_155 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_42]() {
+  %1(CNode_171) = S_Prim_BatchNorm[is_training: Bool(0), input_names: ["x", "scale", "offset", "mean", "variance"], epsilon: F32(1e-05), momentum: F32(0.1), format: "NCHW", output_names: ["y", "batch_mean", "batch_variance", "reserve_space_1", "reserve_space_2"]](%para35_x, %para9_norm1.gamma, %para10_norm1.beta, %para15_norm1.moving_mean, %para16_norm1.moving_variance)
+      : (<null>, <Ref[Tensor[Float32]], (64), ref_key=:norm1.gamma>, <Ref[Tensor[Float32]], (64), ref_key=:norm1.beta>, <Ref[Tensor[Float32]], (64), ref_key=:norm1.moving_mean>, <Ref[Tensor[Float32]], (64), ref_key=:norm1.moving_variance>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:148/                return self.bn_infer(x,/
+  %2(CNode_172) = S_Prim_getitem(%1, I64(0))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:148/                return self.bn_infer(x,/
+  Return(%2)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:148/                return self.bn_infer(x,/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_155:CNode_171{[0]: ValueNode<DoSignaturePrimitive> S_Prim_BatchNorm, [1]: param_x, [2]: param_norm1.gamma, [3]: param_norm1.beta, [4]: param_norm1.moving_mean, [5]: param_norm1.moving_variance}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_155:CNode_172{[0]: ValueNode<DoSignaturePrimitive> S_Prim_getitem, [1]: CNode_171, [2]: ValueNode<Int64Imm> 0}
+#   3: @mindspore_nn_layer_normalization_BatchNorm2d_construct_155:CNode_173{[0]: ValueNode<Primitive> Return, [1]: CNode_172}
+
+
+subgraph attr:
+after_block : 1
+subgraph instance: mindspore_nn_layer_normalization_BatchNorm2d_construct_161 : 000001ED08E59970
+# In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:138/    def construct(self, x):/
+subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_161 parent: [subgraph @mindspore_nn_layer_normalization_BatchNorm2d_construct_42]() {
+  %1(CNode_174) = S_Prim_BatchNorm[is_training: Bool(0), input_names: ["x", "scale", "offset", "mean", "variance"], epsilon: F32(1e-05), momentum: F32(0.1), format: "NCHW", output_names: ["y", "batch_mean", "batch_variance", "reserve_space_1", "reserve_space_2"]](%para35_x, %para9_norm1.gamma, %para10_norm1.beta, %para15_norm1.moving_mean, %para16_norm1.moving_variance)
+      : (<null>, <Ref[Tensor[Float32]], (64), ref_key=:norm1.gamma>, <Ref[Tensor[Float32]], (64), ref_key=:norm1.beta>, <Ref[Tensor[Float32]], (64), ref_key=:norm1.moving_mean>, <Ref[Tensor[Float32]], (64), ref_key=:norm1.moving_variance>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:161/        return self.bn_infer(x,/
+  %2(CNode_175) = S_Prim_getitem(%1, I64(0))
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:161/        return self.bn_infer(x,/
+  Return(%2)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\mindspore\lib\site-packages\mindspore\nn\layer\normalization.py:161/        return self.bn_infer(x,/
+}
+# Order:
+#   1: @mindspore_nn_layer_normalization_BatchNorm2d_construct_161:CNode_174{[0]: ValueNode<DoSignaturePrimitive> S_Prim_BatchNorm, [1]: param_x, [2]: param_norm1.gamma, [3]: param_norm1.beta, [4]: param_norm1.moving_mean, [5]: param_norm1.moving_variance}
+#   2: @mindspore_nn_layer_normalization_BatchNorm2d_construct_161:CNode_175{[0]: ValueNode<DoSignaturePrimitive> S_Prim_getitem, [1]: CNode_174, [2]: ValueNode<Int64Imm> 0}
+#   3: @mindspore_nn_layer_normalization_BatchNorm2d_construct_161:CNode_176{[0]: ValueNode<Primitive> Return, [1]: CNode_175}
+
+
